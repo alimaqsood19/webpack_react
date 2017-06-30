@@ -1,5 +1,6 @@
 var webpack = require('webpack');
 var path = require('path');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 const VENDOR_LIBS = [ //each string is the name of the library we want to include in the separate vendor file
   'react', 'lodash', 'redux', 'react-redux', 'react-dom', 'faker', 'react-input-range', 'redux-form', 'redux-thunk'
 ]; //so these are all the module dependicies that are required for our app to work, they will be bundled in a seperate file vendor.js
@@ -13,7 +14,9 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: '[name].js' //[name] will be replaced with the key from the entry section
+    filename: '[name].[chunkhash].js' //[name] will be replaced with the key from the entry section
+    //chunkhash is a hash of the contents of the file, everytime our bundle.js is updated, it hashes the content and spits it out as chunkhash
+    //this allows the browser to download the new bundle.js if it was updated rather than loading the cached bundle.js
   },
   module: {
     rules: [
@@ -30,9 +33,14 @@ module.exports = {
   },
   plugins: [ 
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor' 
+      names: ['vendor', 'manifest'] //third js file called manifest.js, its purpose is to give the browser a better understanding if vendor.js has actually changed
+      //tells webpack to look at the total sum of all our project files, our bundle and vendor entry point
+      //any modules that are duplicates between the two, pull it out and only include it in the vendor output 
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/index.html' //use this index.html located in src folder as a template to begin with, this plugin basically creates
+      //all the necessary script tags for all the code splitting that we do in our project
+      //puts the new index.html with the updated script tags in the output filepath 'dist'
     })
   ]
 };
-//tells webpack to look at the total sum of all our project files, our bundle and vendor entry point
-//any modules that are duplicates between the two, pull it out and only include it in the vendor output
