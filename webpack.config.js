@@ -41,6 +41,10 @@ module.exports = {
       template: 'src/index.html' //use this index.html located in src folder as a template to begin with, this plugin basically creates
       //all the necessary script tags for all the code splitting that we do in our project
       //puts the new index.html with the updated script tags in the output filepath 'dist'
+    }),
+    new webpack.DefinePlugin({ //DefinePlugin used to define window scope variables that will be defined within our javascript output files (bundle.js);
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) //ensures it is in production
+      //NODE_ENV, global scope property (window scope), if it is equal to production React will act differently
     })
   ]
 };
