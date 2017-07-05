@@ -12,7 +12,7 @@
     "deploy": "npm run build && git subtree push --prefix dist origin gh-pages"
   },
    "engines": {
-    "node": "7.10.0"
+    "node": "6.9.5"
   },
   "repository": "https://github.com/StephenGrider/WebpackProject",
   "author": "",
