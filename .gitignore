@@ -1,3 +1,7 @@
 node_modules
 .env
+<<<<<<< HEAD
 .s3-website.json
+=======
+.s3-website.json
+>>>>>>> 8cace6fb172dd1ab83fe527de84077628624ddde
